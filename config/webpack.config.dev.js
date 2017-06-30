@@ -32,7 +32,7 @@ module.exports = {
   // These are the "entry points" to our application.
   // This means they will be the "root" imports that are included in JS bundle.
   // The first two entry points enable "hot" CSS and auto-refreshes for JS.
-  entry: {
+  entry: [
     // Include an alternative client for WebpackDevServer. A client's job is to
     // connect to WebpackDevServer by a socket and get notified about changes.
     // When you save a file, the client will either apply hot updates (in case
@@ -43,15 +43,12 @@ module.exports = {
     // the line below with these two lines if you prefer the stock client:
     // require.resolve('webpack-dev-server/client') + '?/',
     // require.resolve('webpack/hot/dev-server'),
-    dev: 'react-error-overlay',
-    vendor: [
-      require.resolve('./polyfills'),
-      'react',
-      'react-dom',
-      'react-router-dom'
-    ],
-    app: ['react-dev-utils/webpackHotDevClient', paths.appIndexJs]
-  },
+    'react-hot-loader/patch', 
+    'react-dev-utils/webpackHotDevClient',
+    'react-error-overlay',
+    require.resolve('./polyfills'),
+    paths.appIndexJs
+  ],
   output: {
     // Next line is not used in dev but WebpackDevServer crashes without it:
     path: paths.appBuild,
@@ -168,6 +165,9 @@ module.exports = {
           // It enables caching results in ./node_modules/.cache/babel-loader/
           // directory for faster rebuilds.
           cacheDirectory: true,
+          plugins: [
+            'react-hot-loader/babel'
+          ]
         },
       },
       // "postcss" loader applies autoprefixer to our CSS.
